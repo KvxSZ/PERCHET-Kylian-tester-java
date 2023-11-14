@@ -6,33 +6,40 @@ import java.util.concurrent.TimeUnit;
 
 <span class="fc" id="L7">public class FareCalculatorService {</span>
 
-    public void calculateFare(Ticket ticket){
-<span class="pc bpc" id="L10" title="1 of 4 branches missed.">        if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){</span>
-<span class="fc" id="L11">            throw new IllegalArgumentException(&quot;Out time provided is incorrect:&quot;+ticket.getOutTime().toString());</span>
+    public void calculateFare(Ticket ticket) {
+<span class="fc" id="L10">        calculateFare(ticket, false);</span>
+<span class="fc" id="L11">    }</span>
+
+    public void calculateFare(Ticket ticket, boolean discount) {
+<span class="pc bpc" id="L14" title="1 of 4 branches missed.">        if ((ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime()))) {</span>
+<span class="fc" id="L15">            throw new IllegalArgumentException(&quot;Out time provided is incorrect:&quot; + ticket.getOutTime().toString());</span>
         }
 
-<span class="fc" id="L14">        int inHour = (int) ticket.getInTime().getTime();</span>
-<span class="fc" id="L15">        int outHour = (int) ticket.getOutTime().getTime();</span>
+<span class="fc" id="L18">        int inHour = (int) ticket.getInTime().getTime();</span>
+<span class="fc" id="L19">        int outHour = (int) ticket.getOutTime().getTime();</span>
 
-        //TODO: Some tests are failing here. Need to check if this logic is correct
-<span class="fc" id="L18">        long durationInMinutes = TimeUnit.MINUTES.convert(outHour - inHour, TimeUnit.MILLISECONDS);</span>
-<span class="fc" id="L19">        double durationInHours = (double) durationInMinutes / 60;</span>
+<span class="fc" id="L21">        long durationInMinutes = TimeUnit.MINUTES.convert(outHour - inHour, TimeUnit.MILLISECONDS);</span>
+<span class="fc" id="L22">        double durationInHours = (double) durationInMinutes / 60;</span>
 
-<span class="fc bfc" id="L21" title="All 2 branches covered.">        if(durationInMinutes &lt;= 30){</span>
-<span class="fc" id="L22">            ticket.setPrice(0.0);</span>
-        }else{
-<span class="pc bpc" id="L24" title="1 of 3 branches missed.">            switch (ticket.getParkingSpot().getParkingType()){</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        if (durationInMinutes &lt; 30) {</span>
+<span class="fc" id="L25">            ticket.setPrice(0.0);</span>
+        } else {
+
+<span class="fc bfc" id="L28" title="All 2 branches covered.">            double discountFactor = discount ? 0.95 : 1.0;</span>
+
+<span class="pc bpc" id="L30" title="1 of 3 branches missed.">            switch (ticket.getParkingSpot().getParkingType()) {</span>
                 case CAR: {
-<span class="fc" id="L26">                    ticket.setPrice(durationInHours * Fare.CAR_RATE_PER_HOUR);</span>
-<span class="fc" id="L27">                    break;</span>
+<span class="fc" id="L32">                    ticket.setPrice(durationInHours * Fare.CAR_RATE_PER_HOUR * discountFactor);</span>
+<span class="fc" id="L33">                    break;</span>
                 }
                 case BIKE: {
-<span class="fc" id="L30">                    ticket.setPrice(durationInHours * Fare.BIKE_RATE_PER_HOUR);</span>
-<span class="fc" id="L31">                    break;</span>
+<span class="fc" id="L36">                    ticket.setPrice(durationInHours * Fare.BIKE_RATE_PER_HOUR * discountFactor);</span>
+<span class="fc" id="L37">                    break;</span>
                 }
-<span class="nc" id="L33">                default: throw new IllegalArgumentException(&quot;Unkown Parking Type&quot;);</span>
+                default:
+<span class="nc" id="L40">                    throw new IllegalArgumentException(&quot;Unknown Parking Type&quot;);</span>
             }
         }
-<span class="fc" id="L36">    }</span>
+<span class="fc" id="L43">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

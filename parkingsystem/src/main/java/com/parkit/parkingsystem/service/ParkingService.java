@@ -32,6 +32,9 @@ public class ParkingService {
             ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();
             if(parkingSpot !=null && parkingSpot.getId() > 0){
                 String vehicleRegNumber = getVehichleRegNumber();
+                if (isRegularUser(vehicleRegNumber)) {
+                    System.out.println("Bienvenue de nouveau ! En tant qu'utilisateur régulier de notre parking, vous allez obtenir une remise de 5%");
+                }
                 parkingSpot.setAvailable(false);
                 parkingSpotDAO.updateParking(parkingSpot);//allot this parking space and mark it's availability as false
 
@@ -57,6 +60,11 @@ public class ParkingService {
     private String getVehichleRegNumber() throws Exception {
         System.out.println("Please type the vehicle registration number and press enter key");
         return inputReaderUtil.readVehicleRegistrationNumber();
+    }
+
+    private boolean isRegularUser(String vehicleRegNumber) {
+        int nbTickets = ticketDAO.getNbTicket(vehicleRegNumber);
+        return nbTickets > 0;
     }
 
     public ParkingSpot getNextParkingNumberIfAvailable(){
@@ -101,6 +109,14 @@ public class ParkingService {
         try{
             String vehicleRegNumber = getVehichleRegNumber();
             Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
+
+            boolean isRegularUser = isRegularUser(vehicleRegNumber);
+            if(!isRegularUser){
+                fareCalculatorService.calculateFare(ticket, true);
+            } else {
+                fareCalculatorService.calculateFare(ticket);
+            }
+
             Date outTime = new Date();
             ticket.setOutTime(outTime);
             fareCalculatorService.calculateFare(ticket);
