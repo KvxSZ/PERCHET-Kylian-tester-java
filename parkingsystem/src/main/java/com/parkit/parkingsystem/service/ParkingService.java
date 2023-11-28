@@ -62,9 +62,8 @@ public class ParkingService {
         return inputReaderUtil.readVehicleRegistrationNumber();
     }
 
-    private boolean isRegularUser(String vehicleRegNumber) {
-        int nbTickets = ticketDAO.getNbTicket(vehicleRegNumber);
-        return nbTickets > 0;
+    public boolean isRegularUser(String vehicleRegNumber) {
+        return ticketDAO.getNbTicket(vehicleRegNumber) > 0;
     }
 
     public ParkingSpot getNextParkingNumberIfAvailable(){
@@ -86,7 +85,7 @@ public class ParkingService {
         return parkingSpot;
     }
 
-    private ParkingType getVehichleType(){
+    public ParkingType getVehichleType(){
         System.out.println("Please select vehicle type from menu");
         System.out.println("1 CAR");
         System.out.println("2 BIKE");
@@ -104,6 +103,7 @@ public class ParkingService {
             }
         }
     }
+
 
     public void processExitingVehicle() {
         try{
@@ -124,10 +124,10 @@ public class ParkingService {
                 ParkingSpot parkingSpot = ticket.getParkingSpot();
                 parkingSpot.setAvailable(true);
                 parkingSpotDAO.updateParking(parkingSpot);
-                System.out.println("Please pay the parking fare:" + ticket.getPrice());
-                System.out.println("Recorded out-time for vehicle number:" + ticket.getVehicleRegNumber() + " is:" + outTime);
+                logger.error("Please pay the parking fare:" + ticket.getPrice());
+                logger.error("Recorded out-time for vehicle number:" + ticket.getVehicleRegNumber() + " is:" + outTime);
             }else{
-                System.out.println("Unable to update ticket information. Error occurred");
+                logger.error("Unable to update ticket information. Error occurred");
             }
         }catch(Exception e){
             logger.error("Unable to process exiting vehicle",e);

@@ -11,21 +11,21 @@ import java.util.concurrent.TimeUnit;
 <span class="fc" id="L11">    }</span>
 
     public void calculateFare(Ticket ticket, boolean discount) {
-<span class="pc bpc" id="L14" title="1 of 4 branches missed.">        if ((ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime()))) {</span>
-<span class="fc" id="L15">            throw new IllegalArgumentException(&quot;Out time provided is incorrect:&quot; + ticket.getOutTime().toString());</span>
+<span class="fc bfc" id="L14" title="All 4 branches covered.">        if ((ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime()))) {</span>
+<span class="fc" id="L15">            throw new IllegalArgumentException(&quot;Out time provided is incorrect&quot;);</span>
         }
 
 <span class="fc" id="L18">        int inHour = (int) ticket.getInTime().getTime();</span>
 <span class="fc" id="L19">        int outHour = (int) ticket.getOutTime().getTime();</span>
 
 <span class="fc" id="L21">        long durationInMinutes = TimeUnit.MINUTES.convert(outHour - inHour, TimeUnit.MILLISECONDS);</span>
-<span class="fc" id="L22">        double durationInHours = (double) durationInMinutes / 60;</span>
+<span class="fc" id="L22">        double durationInHours =  durationInMinutes / 60D;</span>
 
 <span class="fc bfc" id="L24" title="All 2 branches covered.">        if (durationInMinutes &lt; 30) {</span>
 <span class="fc" id="L25">            ticket.setPrice(0.0);</span>
         } else {
 
-<span class="fc bfc" id="L28" title="All 2 branches covered.">            double discountFactor = discount ? 0.95 : 1.0;</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">            double discountFactor = discount ? 0.95 : 1D;</span>
 
 <span class="pc bpc" id="L30" title="1 of 3 branches missed.">            switch (ticket.getParkingSpot().getParkingType()) {</span>
                 case CAR: {

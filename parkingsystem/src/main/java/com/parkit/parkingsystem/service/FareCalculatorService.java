@@ -12,20 +12,20 @@ public class FareCalculatorService {
 
     public void calculateFare(Ticket ticket, boolean discount) {
         if ((ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime()))) {
-            throw new IllegalArgumentException("Out time provided is incorrect:" + ticket.getOutTime().toString());
+            throw new IllegalArgumentException("Out time provided is incorrect");
         }
 
         int inHour = (int) ticket.getInTime().getTime();
         int outHour = (int) ticket.getOutTime().getTime();
 
         long durationInMinutes = TimeUnit.MINUTES.convert(outHour - inHour, TimeUnit.MILLISECONDS);
-        double durationInHours = (double) durationInMinutes / 60;
+        double durationInHours =  durationInMinutes / 60D;
 
         if (durationInMinutes < 30) {
             ticket.setPrice(0.0);
         } else {
 
-            double discountFactor = discount ? 0.95 : 1.0;
+            double discountFactor = discount ? 0.95 : 1D;
 
             switch (ticket.getParkingSpot().getParkingType()) {
                 case CAR: {
