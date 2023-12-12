@@ -30,7 +30,7 @@ public class ParkingService {
     public void processIncomingVehicle() {
         try{
             ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();
-            if(parkingSpot !=null && parkingSpot.getId() > 0){
+            if(parkingSpot != null && parkingSpot.getId() > 0){
                 String vehicleRegNumber = getVehichleRegNumber();
                 if (isRegularUser(vehicleRegNumber)) {
                     System.out.println("Bienvenue de nouveau ! En tant qu'utilisateur régulier de notre parking, vous allez obtenir une remise de 5%");
@@ -112,9 +112,9 @@ public class ParkingService {
 
             boolean isRegularUser = isRegularUser(vehicleRegNumber);
             if(!isRegularUser){
-                fareCalculatorService.calculateFare(ticket, true);
-            } else {
                 fareCalculatorService.calculateFare(ticket);
+            } else {
+                fareCalculatorService.calculateFare(ticket, true);
             }
 
             Date outTime = new Date();

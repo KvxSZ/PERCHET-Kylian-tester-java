@@ -182,12 +182,25 @@ public class ParkingServiceTest {
     }
 
     @Test
+    public void testGetNextParkingNumberIfAvailableParkingNotFound() {
+        when(inputReaderUtil.readSelection()).thenReturn(2);
+        when(parkingSpotDAO.getNextAvailableSlot(any())).thenReturn(-1);
+
+        ParkingSpot resultSpot = parkingService.getNextParkingNumberIfAvailable();
+
+        Assertions.assertNull(resultSpot);
+        verify(inputReaderUtil, times(1)).readSelection();
+    }
+
+    @Test
     public void testParkingLotExitRecurringUser() throws Exception {
         String vehicleRegNumber = "ABC123";
         Ticket mockTicket = new Ticket();
         mockTicket.setInTime(new Date(System.currentTimeMillis() - (60*60*1000)));
         mockTicket.setOutTime(new Date());
         mockTicket.setParkingSpot(new ParkingSpot(1, ParkingType.BIKE, true));
+        when(inputReaderUtil.readSelection()).thenReturn(2);
+        when(parkingSpotDAO.getNextAvailableSlot(ParkingType.BIKE)).thenReturn(1);
         when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn(vehicleRegNumber);
         when(ticketDAO.getTicket(vehicleRegNumber)).thenReturn(mockTicket);
         when(ticketDAO.getNbTicket(vehicleRegNumber)).thenReturn(1);
@@ -198,7 +211,7 @@ public class ParkingServiceTest {
 
         parkingService.processExitingVehicle();
 
-        verify(parkingSpotDAO, times(1)).updateParking(any(ParkingSpot.class));
+        verify(parkingSpotDAO, times(2)).updateParking(any(ParkingSpot.class));
         verify(ticketDAO, times(1)).updateTicket(any(Ticket.class));
 
     }
