@@ -1,0 +1,19 @@
+-------------------------------------------------------------------------------
+Test set: com.parkit.parkingsystem.InteractiveShellTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.485 s <<< FAILURE! - in com.parkit.parkingsystem.InteractiveShellTest
+testLoadInterface  Time elapsed: 0.485 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: 
+expected: <Welcome to Parking System!
+Please select an option. Simply enter the number to choose an action
+1 New Vehicle Entering - Allocate Parking Space
+2 Vehicle Exiting - Generate Ticket Price
+3 Shutdown System> but was: <Welcome to Parking System!
+Please select an option. Simply enter the number to choose an action
+1 New Vehicle Entering - Allocate Parking Space
+2 Vehicle Exiting - Generate Ticket Price
+3 Shutdown System
+Exiting from the system!
+>
+	at com.parkit.parkingsystem.InteractiveShellTest.testLoadInterface(InteractiveShellTest.java:31)
+
