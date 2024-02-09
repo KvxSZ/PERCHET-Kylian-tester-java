@@ -1,0 +1,13 @@
+-------------------------------------------------------------------------------
+Test set: com.parkit.parkingsystem.integration.ParkingDataBaseTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 1.202 s <<< FAILURE! - in com.parkit.parkingsystem.integration.ParkingDataBaseTest
+testParkingLotExit  Time elapsed: 0.69 s  <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "com.parkit.parkingsystem.model.Ticket.getId()" because the return value of "com.parkit.parkingsystem.dao.TicketDAO.getTicket(String)" is null
+	at com.parkit.parkingsystem.integration.ParkingDataBaseTest.testParkingACar(ParkingDataBaseTest.java:51)
+	at com.parkit.parkingsystem.integration.ParkingDataBaseTest.testParkingLotExit(ParkingDataBaseTest.java:57)
+
+testParkingACar  Time elapsed: 0.008 s  <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "com.parkit.parkingsystem.model.Ticket.getId()" because the return value of "com.parkit.parkingsystem.dao.TicketDAO.getTicket(String)" is null
+	at com.parkit.parkingsystem.integration.ParkingDataBaseTest.testParkingACar(ParkingDataBaseTest.java:51)
+

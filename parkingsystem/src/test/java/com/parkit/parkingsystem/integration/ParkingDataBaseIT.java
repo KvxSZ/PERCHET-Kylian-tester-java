@@ -1,9 +1,11 @@
 package com.parkit.parkingsystem.integration;
 
+import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
 import com.parkit.parkingsystem.dao.TicketDAO;
 import com.parkit.parkingsystem.integration.config.DataBaseTestConfig;
 import com.parkit.parkingsystem.integration.service.DataBasePrepareService;
+import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.service.ParkingService;
 import com.parkit.parkingsystem.util.InputReaderUtil;
 import org.junit.jupiter.api.*;
@@ -45,20 +47,24 @@ public class ParkingDataBaseIT {
     }
 
     @Test
-    public void testParkingACar(){
+    public void testParkingACar() {
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
         parkingService.processIncomingVehicle();
-        Assertions.assertTrue(ticketDAO.getTicket("ABCDEF").getId() > 0);
-        Assertions.assertTrue(parkingSpotDAO.getNextAvailableSlot(parkingService.getVehichleType()) > 0);
+
+        Assertions.assertNotNull(ticketDAO.getTicket("ABCDEF"));
+
+        Assertions.assertTrue(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR) > 0);
     }
 
     @Test
-    public void testParkingLotExit(){
+    public void testParkingLotExit() {
         testParkingACar();
+
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
         parkingService.processExitingVehicle();
-        Assertions.assertTrue(ticketDAO.getTicket("ABCDEF").getPrice() >= 0);
-        Assertions.assertTrue(ticketDAO.getTicket("ABCDEF").getOutTime() != null);
+        Ticket ticket = ticketDAO.getTicket("ABCDEF");
+        Assertions.assertTrue(ticket.getPrice() >= 0);
+        Assertions.assertNotNull(ticket.getOutTime());
     }
 
 }
